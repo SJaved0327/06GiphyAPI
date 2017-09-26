@@ -34,6 +34,9 @@ function renderButtons() {
 
 };
 
+//populate buttons
+//call renderButtons function
+renderButtons();
 
 //displayImages
 //function to display images associated with the data-name of button selected
@@ -70,6 +73,9 @@ function displayImages() {
             //image tag receives size attribute
             //width = 30% of container
             animalImage.attr("width", "30%");
+            //image tag receives class attribute
+            //class = animalImage
+            animalImage.addClass("animalImage");
             //images are prepened to the animals div
             $("#animals").prepend(animalImage);
           }
@@ -80,6 +86,26 @@ function displayImages() {
         });
 
 };
+
+
+//changeDisplay
+//images will alternate having still OR moving displays
+function changeDisplay (){
+
+  //$(this).attr(src)
+
+  console.log($(this)[0].attributes[0].value);
+
+  
+
+};
+
+//moving
+"https://media3.giphy.com/media/U5dPt0qZ7F1ks/giphy.gif?fingerprint=e1bb72ff59c9af4153696e356f62b349"
+//still
+"https://media3.giphy.com/media/U5dPt0qZ7F1ks/giphy_s.gif?fingerprint=e1bb72ff59c9af4153696e356f62b349"
+
+
 
 
 //---------- CLICK EVENTS ----------//
@@ -103,6 +129,9 @@ $("#addAnimal").on("click", function(event) {
     //call renderButtons function
     renderButtons();
 
+    //clear value displayed in the form
+    $("#animal-input").val("");
+
 });
 
 
@@ -110,10 +139,6 @@ $("#addAnimal").on("click", function(event) {
 //when any button with animal class is clicked, displayImages function is called
 $(document).on("click", ".animal", displayImages);
 
-
-//---------- ON PAGE LOAD ----------//
-
-
-//populate buttons
-//call renderButtons function
-renderButtons();
+//on the window:
+//when any image is clicked, it will be still OR animated
+$(document).on("click", ".animalImage", changeDisplay);
