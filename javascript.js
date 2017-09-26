@@ -31,52 +31,61 @@ renderButtons();
 // Function for dumping the JSON content for each button into the div
 function displayImages() {
 
+  $("#animals").empty();
+
 	var animal = $(this).attr("data-name");
-	var apiKey = "dc6zaTOxFJmzC";
-	var queryURL = "http://api.giphy.com/v1/gifs/random?api_key=" + apiKey + "&tag=" + animal +"";
-  //var queryURL = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cats"
+  console.log(animal);
+	var queryURL = "http://api.giphy.com/v1/gifs/search?q="+animal+"&api_key=dc6zaTOxFJmzC&rating=pg";
+  
         $.ajax({
           url: queryURL,
           method: "GET"
         }).done(function(response) {
-          //$("#animals").html(JSON.stringify(response));
+
           console.log(response);
+          
+          for (var i = 0; i < 10; i++){
+            
+            // Saving the image_original_url property
+            var imageUrl = response.data[i].images.original_still.url;
 
-          // Saving the image_original_url property
-          var imageUrl = response.data.image_original_url;
+            // Creating and storing an image tag
+            var animalImage = $("<img>");
 
-          // Creating and storing an image tag
-          var animalImage = $("<img>");
+            // Setting the catImage src attribute to imageUrl
+            animalImage.attr("src", imageUrl);
+            //animalImage.attr("alt", animal);
+            animalImage.attr("alt", animal);
 
-          // Setting the catImage src attribute to imageUrl
-          animalImage.attr("src", imageUrl);
-          //animalImage.attr("alt", animal);
+            animalImage.attr("width", "30%");
 
-          // Prepending the catImage to the images div
-          $("#animals").prepend(animalImage);
+            // Prepending the catImage to the images div
+            $("#animals").prepend(animalImage);
+
+          }
 
           renderButtons();
+          
+
         });
 
 };
 
-
-/*
 // This function handles events where one button is clicked
-$("#add-movie").on("click", function(event) {
-        event.preventDefault();
+$("#addAnimal").on("click", function(event) {
+    event.preventDefault();
 
-        // This line grabs the input from the textbox
-        var movie = $("#movie-input").val().trim();
+    // This line grabs the input from the textbox
+    var animal = $("#animal-input").val().trim();
 
-        // Adding the movie from the textbox to our array
-        movies.push(movie);
-        console.log(movies)
+    // Adding the movie from the textbox to our array
+    animalArray.push(animal);
+    console.log(animal)
 
-        // Calling renderButtons which handles the processing of our movie array
-        renderButtons();
-      });
-*/
+    // Calling renderButtons which handles the processing of our movie array
+    renderButtons();
+});
+
 
 // Function for displaying the movie info
 //Using $(document).on instead of $(".movie").on to add event listenersto dynamically generated elements
