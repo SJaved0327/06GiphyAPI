@@ -92,21 +92,21 @@ function displayImages() {
 //images will alternate having still OR moving displays
 function changeDisplay (){
 
-  //$(this).attr(src)
+  //URL variable stores the gif url of the selected image
+  var URL = $(this)[0].attributes[0].value;
+  //length stores the length of the url
+  var length = URL.length;
+  //firstHalfURL
+  //first section of url stays the same as query is the same
+  var firstHalfURL = URL.slice(0,50);
+  //movingURL
+  //last section of the url is unique
+  //_s needs to be cut out as it renders the image still
+  var movingURL = URL.slice(52,length);
 
-  console.log($(this)[0].attributes[0].value);
-
-  
+  $(this)[0].attributes[0].value = firstHalfURL + movingURL; 
 
 };
-
-//moving
-"https://media3.giphy.com/media/U5dPt0qZ7F1ks/giphy.gif?fingerprint=e1bb72ff59c9af4153696e356f62b349"
-//still
-"https://media3.giphy.com/media/U5dPt0qZ7F1ks/giphy_s.gif?fingerprint=e1bb72ff59c9af4153696e356f62b349"
-
-
-
 
 //---------- CLICK EVENTS ----------//
 
