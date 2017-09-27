@@ -3,7 +3,7 @@
 
 
 //animalArray holds original array of animal choices
-var animalArray = ["Sloth", "Hamster", "Kitty"];
+var animalArray = ["Sloth", "Hamster", "Kitty", "Red Panda", "Terrier"];
 console.log(animalArray);
 
 
@@ -65,6 +65,9 @@ function displayImages() {
             //image tag is created to hold image
             var animalImage = $("<img>");
             //image tag receives src attribute
+            //data-order
+            animalImage.attr("data-order", [i]);
+            //image tag receives src attribute
             //src = imageURL
             animalImage.attr("src", imageURL);
             //image tag receives alt attribute
@@ -91,22 +94,52 @@ function displayImages() {
 //changeDisplay
 //images will alternate having still OR moving displays
 function changeDisplay (){
+  //animalimage variable will store value of the image tag
+  var animalImage = $(this);
 
-  //URL variable stores the gif url of the selected image
-  var URL = $(this)[0].attributes[0].value;
-  //length stores the length of the url
-  var length = URL.length;
-  //firstHalfURL
-  //first section of url stays the same as query is the same
-  var firstHalfURL = URL.slice(0,50);
-  //movingURL
-  //last section of the url is unique
-  //_s needs to be cut out as it renders the image still
-  var movingURL = URL.slice(52,length);
+  //grab data-order to see where selection is in the original queryURL array
+  var dataOrder = animalImage[0].attributes[0].value;
+  console.log(dataOrder);
 
-  $(this)[0].attributes[0].value = firstHalfURL + movingURL; 
+  //grab alt value to see what animal was used for queryURL
+  var animal = animalImage[0].attributes[2].value;
+  console.log(animal);
+
+  //grab the value of the current URL src of the image
+  var currentURL = animalImage[0].attributes[1].value;
+  console.log(currentURL);
+
+  //plug animal into the queryURL to re-run ajax
+  var queryURL = "http://api.giphy.com/v1/gifs/search?q="+animal+"&api_key=dc6zaTOxFJmzC&rating=pg";
+        //ajax call
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+          
+          //find same giphy in the array
+          //grab the moving URL
+          var movingURL = response.data[dataOrder].images.original.url;
+          //find same giphy in the array
+          //grab the still URL
+          var stillURL = response.data[dataOrder].images.original_still.url;
+
+          //if the current URL src === the moving image URL src
+          if (currentURL === movingURL){
+            //replace the current src with the still URL src
+            animalImage.attr("src", stillURL);
+
+          //if the current URL src === the still image URL src  
+          }else if (currentURL === stillURL){
+            //replace the current src with the moving URL src
+            animalImage.attr("src", movingURL);
+
+          }
+
+        });
 
 };
+
 
 //---------- CLICK EVENTS ----------//
 
@@ -142,3 +175,5 @@ $(document).on("click", ".animal", displayImages);
 //on the window:
 //when any image is clicked, it will be still OR animated
 $(document).on("click", ".animalImage", changeDisplay);
+
+
